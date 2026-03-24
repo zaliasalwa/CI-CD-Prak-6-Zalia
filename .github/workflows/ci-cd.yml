@@ -1,20 +1,26 @@
-name: CI/CD Pipeline
+name: CI/CD
 
 on:
   push:
     branches: [ "main" ]
 
 jobs:
-  build:
+  test:
     runs-on: ubuntu-latest
+
     steps:
-      - name: Checkout kode
-        uses: actions/checkout@v2
+      - uses: actions/checkout@v4
+
       - name: Setup Python
-        uses: actions/setup-python@v2
+        uses: actions/setup-python@v4
         with:
           python-version: '3.10'
-      - name: Install dependencies
+
+      - name: Install pytest
         run: pip install pytest
+
+      - name: Set PYTHONPATH   # ⬅️ TAMBAHAN PENTING
+        run: echo "PYTHONPATH=." >> $GITHUB_ENV
+
       - name: Run test
         run: pytest
